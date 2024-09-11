@@ -26,12 +26,13 @@ def get_pr_diffs(pr):
         diff_text += f"### {filename}\n```\n{patch}\n```\n"
     return diff_text
 
-def generate_update_content(pr_details, pr_diffs, existing_content, update_type):
+def generate_update_content(pr_details, pr_diffs, existing_content, update_type, additional_prompt):
     prompt = (f"Generate an update for the {update_type} based on the following:\n"
               f"Title: {pr_details.title}\n"
               f"Body: {pr_details.body}\n"
               f"Differences:\n{pr_diffs}\n"
-              f"Existing Content:\n{existing_content}\n")
+              f"Existing Content:\n{existing_content}\n"
+              f"Additional Prompt:\n{additional_prompt}\n")
     openai.api_key = OPENAI_API_KEY
     response = openai.chat.completions.create(
         model='gpt-4o-mini',
@@ -62,11 +63,11 @@ if __name__ == '__main__':
         pr_diffs = get_pr_diffs(pr_details)
         
         # Update CHANGELOG.md
-        changelog_entry = generate_update_content(pr_details, pr_diffs, "", "changelog")
+        changelog_entry = generate_update_content(pr_details, pr_diffs, "", "changelog", "")
         update_file('CHANGELOG.md', changelog_entry)
         
         # Update README.md
-        readme_entry = generate_update_content(pr_details, pr_diffs, "", "README")
+        readme_entry = generate_update_content(pr_details, pr_diffs, "", "README", "This should be in md format. The output is a replacement of this file and should not have any place holders")
         update_file('README.md', readme_entry)
         
     except Exception as e:
