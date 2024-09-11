@@ -38,6 +38,7 @@ def generate_update_content(pr_details, pr_diffs, existing_content, update_type)
         messages=[{'role': 'user', 'content': prompt}],
     )
     result = response.choices[0].message.content.strip()
+    print(response.choices[0].message.content.strip())
     return result
 
 def update_file(file_path, content):

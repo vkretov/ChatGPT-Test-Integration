@@ -45,7 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Generate a unique branch name
-          BRANCH_NAME="update-changelog-$(date +%s)"
+          BRANCH_NAME="update-docs-$(date +%s)"
           git checkout -b $BRANCH_NAME
           
           # Configure Git user
@@ -53,13 +53,13 @@ jobs:
           git config user.email "github-actions@github.com"
           
           # Stage, commit, and push changes
-          git add CHANGELOG.md
-          git commit -m "Update CHANGELOG.md with new entries"
+          git add CHANGELOG.md README.md
+          git commit -m "Update CHANGELOG.md and README.md with new entries"
           git push -u origin $BRANCH_NAME
           
           # Create a pull request
-          PR_TITLE="Update CHANGELOG.md with new entries"
-          PR_BODY="This pull request updates the CHANGELOG.md with the latest entries."
+          PR_TITLE="Update CHANGELOG.md and README.md with new entries"
+          PR_BODY="This pull request updates CHANGELOG.md and README.md with the latest entries."
           curl -X POST \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token $GITHUB_TOKEN" \
