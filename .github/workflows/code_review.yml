@@ -1,5 +1,7 @@
 name: Code Review with ChatGPT
 
+permissions: write-all
+
 on:
   pull_request:
     types: [opened, synchronize, reopened]
