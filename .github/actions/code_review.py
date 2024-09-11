@@ -32,7 +32,7 @@ def generate_valid_inline_comments_for_file(filename, patch):
             {"role": "system", "content": "You are an expert code reviewer."},
             {"role": "user", "content": prompt}
         ],
-        model="gpt-4",  # Specify model
+        model="gpt-4o-mini",  # Specify model
         max_tokens=2000,
         temperature=0.2
     )
@@ -83,7 +83,7 @@ def main():
                 if comment_body:
                     post_inline_comment(pr, filename, comment_body, line_number)
 
-    model_name = "GPT-4"
+    model_name = "gpt-4o-mini"
     post_general_comment(pr, model_name)
 
 if __name__ == "__main__":
