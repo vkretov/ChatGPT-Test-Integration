@@ -60,3 +60,24 @@ This update enhances the workflow by automating the documentation process relate
 
 ### Configuration
 - Updated `.gitignore` to exclude the `bin` directory in addition to the `obj` directory for better build hygiene.
+
+### Changelog Update
+
+**Title:** Include README updates and add debug logs
+
+**Details:**
+
+- Updated the workflow to include the `README.md` file in the changelog update.
+- Changed the branch name from `update-changelog` to `update-docs` for clarity on the purpose of the changes.
+- Enhanced the changelog generation script by adding debug logs to display the generated content for better traceability.
+  
+**Changes:**
+- **Changelog Generation Script (`.github/actions/generate_and_update_changelog.py`):**
+  - Added a print statement to log the response content received from the model.
+
+- **Changelog Workflow (`.github/workflows/update_changelog.yml`):**
+  - Modified the Git branch naming convention to `update-docs`.
+  - Changed the git commit message to reflect updates made to both `CHANGELOG.md` and `README.md`.
+  - Updated the pull request title and body to indicate that both files have been modified.
+
+This update aims to improve documentation quality and debugging processes within the repository.
