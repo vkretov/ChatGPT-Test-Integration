@@ -14,7 +14,6 @@ github = Github(GITHUB_TOKEN)
 repo = github.get_repo(REPO_NAME)
 
 def get_pr_details():
-    print(f"PR_NUMBER:{PR_NUMBER}")
     pr = repo.get_pull(int(PR_NUMBER))
     return pr
 
@@ -38,22 +37,32 @@ def generate_changelog_entry(pr_details, pr_diffs):
         messages=[{'role': 'user', 'content': prompt}],
     )
     result = response.choices[0].message.content.strip()
-    print(response.choices[0].message.content)
     return result
 
 def update_changelog(changelog_entry):
     changelog_path = 'CHANGELOG.md'
-    # Check if the file exists; if not, create it
+    
+    print(f"Updating changelog at: {changelog_path}")  # Debugging line
+    
+    # Ensure the file exists or create it
     if not os.path.exists(changelog_path):
+        print(f"File does not exist. Creating new file at {changelog_path}")  # Debugging line
         with open(changelog_path, 'w') as changelog_file:
-            changelog_file.write('# Changelog\n')  # Optionally, add an initial header
-
-    # Append the new entry to the changelog
-    with open(changelog_path, 'a') as changelog_file:
-        changelog_file.write(f'\n\n## {datetime.datetime.now().strftime("%Y-%m-%d")}\n{changelog_entry}\n')
+            changelog_file.write('# Changelog\n')  # Initial header
+    
+    try:
+        # Append new changelog entry
+        with open(changelog_path, 'a') as changelog_file:
+            changelog_file.write(f'\n\n## {datetime.datetime.now().strftime("%Y-%m-%d")}\n{changelog_entry}\n')
+        print(f"Changelog entry written successfully")  # Debugging line
+    except Exception as e:
+        print(f"Error writing to changelog: {e}")  # Debugging line
 
 if __name__ == '__main__':
-    pr_details = get_pr_details()
-    pr_diffs = get_pr_diffs(pr_details)
-    changelog_entry = generate_changelog_entry(pr_details, pr_diffs)
-    update_changelog(changelog_entry)
+    try:
+        pr_details = get_pr_details()
+        pr_diffs = get_pr_diffs(pr_details)
+        changelog_entry = generate_changelog_entry(pr_details, pr_diffs)
+        update_changelog(changelog_entry)
+    except Exception as e:
+        print(f"Script error: {e}")
