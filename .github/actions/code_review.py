@@ -28,7 +28,7 @@ def generate_valid_comment_for_file(filename, patch):
              f"```diff\n{patch}\n```"
 
     response = openai.chat.completions.create(
-        model="gpt-4",  # Use GPT-4 model
+        model="gpt-4o-mini",  # Use GPT-4 model
         messages=[
             {"role": "system", "content": "You are an expert code reviewer."},
             {"role": "user", "content": prompt}
@@ -65,7 +65,7 @@ def post_inline_comment(pr, filename, comment_body):
     try:
         pr.create_review_comment(
             body=comment_body,
-            commit=pr.head.sha,
+            commit=pr.get_commits()[pr.commits - 1],
             path=filename,
             line=1  # Posting a general comment at the start of the file
         )
