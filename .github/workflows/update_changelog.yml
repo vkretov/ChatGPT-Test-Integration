@@ -40,7 +40,7 @@ jobs:
         run: |
           python .github/actions/generate_and_update_changelog.py
           
-       - name: Create Branch, Commit, and Push Changes
+      - name: Create Branch, Commit, and Push Changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
