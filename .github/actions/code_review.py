@@ -65,7 +65,7 @@ def post_inline_comment(pr, filename, comment_body):
     try:
         pr.create_review_comment(
             body=comment_body,
-            commit_id=pr.head.sha,
+            #commit_id=pr.head.sha,
             path=filename,
             position=1  # Posting a general comment at the start of the file
         )
