@@ -27,7 +27,7 @@ def generate_valid_inline_comments_for_file(filename, patch):
              f"where the code could be improved or there is a notable issue. **Avoid commenting on every line** and only give feedback when necessary:\n\n" \
              f"```diff\n{patch}\n```"
 
-    response = openai.completions.create(
+    response = openai.chat.completions.create(
         messages=[
             {"role": "system", "content": "You are an expert code reviewer."},
             {"role": "user", "content": prompt}
