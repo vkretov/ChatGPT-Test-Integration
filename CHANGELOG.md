@@ -46,3 +46,29 @@ These changes restore the workflows that were previously removed, enhancing auto
 - Separate update logic for `CHANGELOG.md` and `README.md` has been introduced.
 
 This update enhances the workflow by automating the documentation process related to pull requests more comprehensively. All relevant changes in code should now be reflected in both the changelog and the README file, keeping project documentation up to date effortlessly.
+
+Here's an update for the changelog based on the provided information:
+
+---
+
+### Changelog Update
+
+## Version [Insert Version Here] - [Insert Date Here]
+
+### Changes
+- Enhanced workflow to automatically update both the `CHANGELOG.md` and `README.md` files based on pull request details.
+
+### Details
+- Introduced a new function, `generate_update_content`, to create update entries for both changelog and README file types, utilizing the differences from the pull request.
+- The `update_file` function has been modified to support updates for both `CHANGELOG.md` and `README.md`, ensuring files are created if they do not exist and that updated content is appended appropriately.
+- Preserved existing content of `CHANGELOG.md` and `README.md` to prevent any loss of information during updates.
+
+### Code Changes
+- Replaced the previous changelog entry generation function with a more versatile approach that accommodates updates for both documentation files.
+- Implemented distinct logic for updating `CHANGELOG.md` and `README.md`.
+
+This update significantly improves the workflow by automating the documentation process for pull requests, ensuring that all pertinent changes in the code are promptly reflected in both the changelog and README file, thereby keeping the project documentation accurate and current.
+
+--- 
+
+Feel free to modify the version number and date as needed!
