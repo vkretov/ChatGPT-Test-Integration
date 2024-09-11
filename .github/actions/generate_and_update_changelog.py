@@ -32,15 +32,21 @@ def generate_changelog_entry(pr_details, pr_diffs):
               f"Body: {pr_details.body}\n"
               f"Differences:\n{pr_diffs}\n")
     openai.api_key = OPENAI_API_KEY
-    response = openai.ChatCompletion.create(
-        model='gpt-3.5-turbo',
+    response = openai.chat.completions.create(
+        model='gpt-4o-mini',
         messages=[{'role': 'user', 'content': prompt}],
     )
-    result = response.choices[0].message['content'].strip()
+    result = response.choices[0].message.content.strip()
     return result
 
 def update_changelog(changelog_entry):
     changelog_path = 'CHANGELOG.md'
+    # Check if the file exists; if not, create it
+    if not os.path.exists(changelog_path):
+        with open(changelog_path, 'w') as changelog_file:
+            changelog_file.write('# Changelog\n')  # Optionally, add an initial header
+
+    # Append the new entry to the changelog
     with open(changelog_path, 'a') as changelog_file:
         changelog_file.write(f'\n\n## {datetime.datetime.now().strftime("%Y-%m-%d")}\n{changelog_entry}\n')
 
