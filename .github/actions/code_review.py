@@ -21,6 +21,26 @@ def get_file_diffs(pr):
             })
     return diffs
 
+def generate_valid_comment_for_file(filename, patch):
+    # Updated prompt to instruct GPT to give a single comment
+    prompt = f"Review the changes in the file {filename} and suggest one important comment " \
+             f"about the code. If there is nothing to improve, simply say 'This file looks good.'\n\n" \
+             f"```diff\n{patch}\n```"
+
+    response = openai.ChatCompletion.create(
+        model="gpt-4",  # Use GPT-4 model
+        messages=[
+            {"role": "system", "content": "You are an expert code reviewer."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=500,
+        temperature=0.2
+    )
+    
+    print(response.choices[0].message)
+    comment = response.choices[0].message.content
+    return comment if comment else "This file looks good."
+
 def generate_valid_inline_comments_for_file(filename, patch):
     # Updated to match new API format
     prompt = f"Review the changes in the file {filename} and suggest any **important inline comments** " \
@@ -41,13 +61,13 @@ def generate_valid_inline_comments_for_file(filename, patch):
     comments = response.choices[0].message.content
     return comments
 
-def post_inline_comment(pr, filename, comment_body, line_number):
+def post_inline_comment(pr, filename, comment_body):
     try:
         pr.create_review_comment(
             body=comment_body,
             commit_id=pr.head.sha,
             path=filename,
-            position=line_number  # Inline comment position in the diff
+            position=1  # Posting a general comment at the start of the file
         )
     except GithubException as e:
         print(f"Failed to post inline comment on {filename}: {e}")
@@ -72,17 +92,10 @@ def main():
         filename = diff['filename']
         patch = diff['patch']
 
-        comments = generate_valid_inline_comments_for_file(filename, patch)
+        comment = generate_valid_comment_for_file(filename, patch)
 
-        lines = comments.split("\n")
-        for line in lines:
-            if line.startswith("Line"):
-                line_parts = line.split(":")
-                line_number = int(line_parts[0].replace("Line", "").strip())
-                comment_body = ":".join(line_parts[1:]).strip()
-
-                if comment_body:
-                    post_inline_comment(pr, filename, comment_body, line_number)
+        # Post the single comment for this file
+        post_inline_comment(pr, filename, comment)
 
     model_name = "gpt-4o-mini"
     post_general_comment(pr, model_name)
