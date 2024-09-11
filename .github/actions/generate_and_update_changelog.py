@@ -26,11 +26,12 @@ def get_pr_diffs(pr):
         diff_text += f"### {filename}\n```\n{patch}\n```\n"
     return diff_text
 
-def generate_changelog_entry(pr_details, pr_diffs):
-    prompt = (f"Generate a changelog entry for the following pull request:\n"
+def generate_update_content(pr_details, pr_diffs, existing_content, update_type):
+    prompt = (f"Generate an update for the {update_type} based on the following:\n"
               f"Title: {pr_details.title}\n"
               f"Body: {pr_details.body}\n"
-              f"Differences:\n{pr_diffs}\n")
+              f"Differences:\n{pr_diffs}\n"
+              f"Existing Content:\n{existing_content}\n")
     openai.api_key = OPENAI_API_KEY
     response = openai.chat.completions.create(
         model='gpt-4o-mini',
@@ -39,30 +40,33 @@ def generate_changelog_entry(pr_details, pr_diffs):
     result = response.choices[0].message.content.strip()
     return result
 
-def update_changelog(changelog_entry):
-    changelog_path = 'CHANGELOG.md'
-    
-    print(f"Updating changelog at: {changelog_path}")  # Debugging line
-    
+def update_file(file_path, content):
+    print(f"Updating file: {file_path}")
     # Ensure the file exists or create it
-    if not os.path.exists(changelog_path):
-        print(f"File does not exist. Creating new file at {changelog_path}")  # Debugging line
-        with open(changelog_path, 'w') as changelog_file:
-            changelog_file.write('# Changelog\n')  # Initial header
-    
-    try:
-        # Append new changelog entry
-        with open(changelog_path, 'a') as changelog_file:
-            changelog_file.write(f'\n\n## {datetime.datetime.now().strftime("%Y-%m-%d")}\n{changelog_entry}\n')
-        print(f"Changelog entry written successfully")  # Debugging line
-    except Exception as e:
-        print(f"Error writing to changelog: {e}")  # Debugging line
+    if not os.path.exists(file_path):
+        print(f"File does not exist. Creating new file at {file_path}")
+        with open(file_path, 'w') as file:
+            file.write(content)
+    else:
+        with open(file_path, 'r') as file:
+            existing_content = file.read()
+        new_content = existing_content + "\n\n" + content
+        with open(file_path, 'w') as file:
+            file.write(new_content)
+    print(f"File updated successfully: {file_path}")
 
 if __name__ == '__main__':
     try:
         pr_details = get_pr_details()
         pr_diffs = get_pr_diffs(pr_details)
-        changelog_entry = generate_changelog_entry(pr_details, pr_diffs)
-        update_changelog(changelog_entry)
+        
+        # Update CHANGELOG.md
+        changelog_entry = generate_update_content(pr_details, pr_diffs, "", "changelog")
+        update_file('CHANGELOG.md', changelog_entry)
+        
+        # Update README.md
+        readme_entry = generate_update_content(pr_details, pr_diffs, "", "README")
+        update_file('README.md', readme_entry)
+        
     except Exception as e:
         print(f"Script error: {e}")
