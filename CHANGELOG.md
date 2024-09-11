@@ -27,3 +27,22 @@
     - It includes steps for checking out the code, setting up Python, installing dependencies, fetching the pull request number, generating and updating the changelog, and finally creating a new branch with the changes and opening a pull request for the updates. 
 
 These changes restore the workflows that were previously removed, enhancing automation and maintaining a proper changelog.
+
+
+# Changelog Update
+
+## Version [Insert Version Here] - [Insert Date Here]
+
+### Changes
+- Updated workflow to now not only update the `CHANGELOG.md` file but also the `README.md` file based on the details of pull requests.
+
+### Details
+- The script has been modified to include a new function `generate_update_content`, which generates update content based on the type (changelog or README) along with the pull request differences.
+- The `update_file` function now handles updates for both `CHANGELOG.md` and `README.md`. It checks if the files exist, creates them if they do not, and appends the new content read from the pull request.
+- The existing content of `CHANGELOG.md` and `README.md` is retained, ensuring no information is lost during the update process.
+
+### Code Changes
+- The function for generating changelog entries has been replaced with a more generalized approach for handling updates.
+- Separate update logic for `CHANGELOG.md` and `README.md` has been introduced.
+
+This update enhances the workflow by automating the documentation process related to pull requests more comprehensively. All relevant changes in code should now be reflected in both the changelog and the README file, keeping project documentation up to date effortlessly.
