@@ -60,3 +60,27 @@ This update enhances the workflow by automating the documentation process relate
 
 ### Configuration
 - Updated `.gitignore` to exclude the `bin` directory in addition to the `obj` directory for better build hygiene.
+
+Here's an update for the changelog based on the provided information:
+
+---
+
+# Changelog Update
+
+## [Unreleased]
+
+### Added
+- Implemented support for cities in the weather forecast feature.
+  - Introduced a new static array for cities, including major cities like New York, Los Angeles, and Chicago.
+  - Updated the `WeatherForecast` model to include a `City` property.
+  - Modified `WeatherForecastController` to generate a random city along with the weather forecast data.
+
+### Improvements
+- Changed the HTTP GET method name in `WeatherForecastController` from `GetWeatherForecast` to `GetWeatherForecastByCity` for clearer functionality indication.
+
+### Configuration
+- Updated `.gitignore` to exclude the `bin` directory in addition to the `obj` directory for better build hygiene.
+
+---
+
+This changelog entry adds new features, improvement highlights, and configuration updates that were implemented as per the latest changes.
