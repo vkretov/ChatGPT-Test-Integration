@@ -46,3 +46,17 @@ These changes restore the workflows that were previously removed, enhancing auto
 - Separate update logic for `CHANGELOG.md` and `README.md` has been introduced.
 
 This update enhances the workflow by automating the documentation process related to pull requests more comprehensively. All relevant changes in code should now be reflected in both the changelog and the README file, keeping project documentation up to date effortlessly.
+
+## Changelog
+
+### Added
+- Implemented support for cities in the weather forecast feature.
+  - Introduced a new static array for cities, including major cities like New York, Los Angeles, and Chicago.
+  - Updated the `WeatherForecast` model to include a `City` property.
+  - Modified `WeatherForecastController` to generate a random city along with the weather forecast data.
+
+### Improvements
+- Changed the HTTP GET method name in `WeatherForecastController` from `GetWeatherForecast` to `GetWeatherForecastByCity` for clearer functionality indication.
+
+### Configuration
+- Updated `.gitignore` to exclude the `bin` directory in addition to the `obj` directory for better build hygiene.
