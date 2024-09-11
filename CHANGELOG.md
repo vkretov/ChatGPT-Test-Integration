@@ -60,3 +60,53 @@ This update enhances the workflow by automating the documentation process relate
 
 ### Configuration
 - Updated `.gitignore` to exclude the `bin` directory in addition to the `obj` directory for better build hygiene.
+
+### Changelog Update - New Feature: More Specific Prompts
+
+#### Enhancements
+- **Feature Addition**: Updated the `generate_update_content` function to accept an additional parameter (`additional_prompt`) that allows for the inclusion of more specific prompts when generating updates.
+  
+#### Changes
+- **File Modification**: 
+  - Updated `.github/actions/generate_and_update_changelog.py` to incorporate enhanced prompt capabilities.
+    - The function `generate_update_content` now includes an `additional_prompt` argument to provide more context during the generation of changelog and README entries.
+    - Existing functionality remains intact, ensuring backward compatibility while enriching the prompt generation process. 
+
+#### Usage
+- The README updates now include a specific prompt indicating the desired Markdown format, ensuring consistent output that meets the documentation standards. 
+
+#### Code Diff
+```diff
+@@ -26,12 +26,13 @@ def get_pr_diffs(pr):
+         diff_text += f"### {filename}\n```\n{patch}\n```\n"
+     return diff_text
+ 
+-def generate_update_content(pr_details, pr_diffs, existing_content, update_type):
++def generate_update_content(pr_details, pr_diffs, existing_content, update_type, additional_prompt):
+     prompt = (f"Generate an update for the {update_type} based on the following:\n"
+               f"Title: {pr_details.title}\n"
+               f"Body: {pr_details.body}\n"
+               f"Differences:\n{pr_diffs}\n"
+-              f"Existing Content:\n{existing_content}\n")
++              f"Existing Content:\n{existing_content}\n"
++              f"Additional Prompt:\n{additional_prompt}\n")
+     openai.api_key = OPENAI_API_KEY
+     response = openai.chat.completions.create(
+         model='gpt-4o-mini',
+@@ -62,11 +63,11 @@ def update_file(file_path, content):
+         pr_diffs = get_pr_diffs(pr_details)
+         
+         # Update CHANGELOG.md
+-        changelog_entry = generate_update_content(pr_details, pr_diffs, "", "changelog")
++        changelog_entry = generate_update_content(pr_details, pr_diffs, "", "changelog", "")
+         update_file('CHANGELOG.md', changelog_entry)
+         
+         # Update README.md
+-        readme_entry = generate_update_content(pr_details, pr_diffs, "", "README")
++        readme_entry = generate_update_content(pr_details, pr_diffs, "", "README", "This should be in md format. The output is a replacement of this file and should not have any place holders")
+         update_file('README.md', readme_entry)
+         
+     except Exception as e:
+```
+
+This update is aimed at improving the ability to generate more relevant documentation changes and to streamline the update process, making it easier to maintain quality and consistency in project documentation.
