@@ -37,7 +37,7 @@ def generate_valid_inline_comments_for_file(filename, patch):
         temperature=0.2
     )
     
-    print(esponse.choices[0].message)
+    print(response.choices[0].message)
     comments = response.choices[0].message.content
     return comments
 
