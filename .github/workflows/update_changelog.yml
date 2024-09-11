@@ -1,0 +1,67 @@
+name: Update Changelog
+
+permissions: write-all
+
+on:
+  push:
+    branches:
+      - main  # Adjust if your default branch is not `main`
+
+jobs:
+  update_changelog:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests PyGithub openai
+
+      - name: Fetch Pull Request Number
+        id: fetch_pr
+        run: |
+          # Get the PR number from the commit message if available
+          PR_NUMBER=$(git log -1 --pretty=%B | grep -oP '#\d+' | sed 's/#//')
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
+
+      - name: Generate and Update Changelog
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ env.PR_NUMBER }}
+        run: |
+          python .github/actions/generate_and_update_changelog.py
+          
+      - name: Create Branch, Commit, and Push Changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Generate a unique branch name
+          BRANCH_NAME="update-changelog-$(date +%s)"
+          git checkout -b $BRANCH_NAME
+          
+          # Configure Git user
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          
+          # Stage, commit, and push changes
+          git add CHANGELOG.md
+          git commit -m "Update CHANGELOG.md with new entries"
+          git push -u origin $BRANCH_NAME
+          
+          # Create a pull request
+          PR_TITLE="Update CHANGELOG.md with new entries"
+          PR_BODY="This pull request updates the CHANGELOG.md with the latest entries."
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -d "{\"title\":\"$PR_TITLE\",\"body\":\"$PR_BODY\",\"head\":\"$BRANCH_NAME\",\"base\":\"main\"}" \
+            https://api.github.com/repos/${{ github.repository }}/pulls
