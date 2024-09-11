@@ -63,11 +63,11 @@ if __name__ == '__main__':
         pr_diffs = get_pr_diffs(pr_details)
         
         # Update CHANGELOG.md
-        changelog_entry = generate_update_content(pr_details, pr_diffs, "", "changelog", "")
+        changelog_entry = generate_update_content(pr_details, pr_diffs, "", "changelog", "This should be a brief summary of the changes.")
         update_file('CHANGELOG.md', changelog_entry)
         
         # Update README.md
-        readme_entry = generate_update_content(pr_details, pr_diffs, "", "README", "This should be in md format. The output is a replacement of this file and should not have any place holders")
+        readme_entry = generate_update_content(pr_details, pr_diffs, "", "README", "This should be in md format. The output is a replacement of this file and should not have any place holders. this should only include changes to the api project. It needs to update the api docs when changed.")
         update_file('README.md', readme_entry)
         
     except Exception as e:
