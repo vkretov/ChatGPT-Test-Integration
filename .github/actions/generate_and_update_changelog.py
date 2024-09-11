@@ -14,6 +14,7 @@ github = Github(GITHUB_TOKEN)
 repo = github.get_repo(REPO_NAME)
 
 def get_pr_details():
+    print(f"PR_NUMBER:{PR_NUMBER}")
     pr = repo.get_pull(int(PR_NUMBER))
     return pr
 
@@ -37,6 +38,7 @@ def generate_changelog_entry(pr_details, pr_diffs):
         messages=[{'role': 'user', 'content': prompt}],
     )
     result = response.choices[0].message.content.strip()
+    print(response.choices[0].message.content)
     return result
 
 def update_changelog(changelog_entry):
