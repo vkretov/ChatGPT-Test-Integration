@@ -27,7 +27,7 @@ def generate_valid_comment_for_file(filename, patch):
              f"about the code. If there is nothing to improve, simply say 'This file looks good.'\n\n" \
              f"```diff\n{patch}\n```"
 
-    response = openai.ChatCompletion.create(
+    response = openai.chat.completions.create(
         model="gpt-4",  # Use GPT-4 model
         messages=[
             {"role": "system", "content": "You are an expert code reviewer."},
