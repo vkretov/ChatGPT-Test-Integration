@@ -67,7 +67,7 @@ def post_inline_comment(pr, filename, comment_body):
             body=comment_body,
             #commit_id=pr.head.sha,
             path=filename,
-            position=1  # Posting a general comment at the start of the file
+            line=1  # Posting a general comment at the start of the file
         )
     except GithubException as e:
         print(f"Failed to post inline comment on {filename}: {e}")
