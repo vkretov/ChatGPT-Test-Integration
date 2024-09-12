@@ -60,3 +60,14 @@ This update enhances the workflow by automating the documentation process relate
 
 ### Configuration
 - Updated `.gitignore` to exclude the `bin` directory in addition to the `obj` directory for better build hygiene.
+
+## Changelog Update
+
+### Implement Basic Endpoints and Simulate a Database
+
+- **Added** `WeatherRepository` class to manage weather data in memory.
+- **Introduced** `WeatherDto` class for transferring weather data with properties for `City` and `TemperatureC`.
+- **Updated** `WeatherForecastController`:
+  - Modified `Get` method to `GetByCity`, which retrieves weather forecasts based on the provided city using `WeatherRepository`.
+  - Added a new `AddWeatherForecast` method to allow adding weather forecasts to the in-memory data store.
+- **Configured** dependency injection for `WeatherRepository` in `Program.cs`, allowing it to be used throughout the application.
