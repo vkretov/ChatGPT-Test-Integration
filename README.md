@@ -64,3 +64,29 @@ Status Code: 200 OK
 This is a readme for WeatherService. It should be in markdown format and should cover all the HTTP endpoints and their request/response objects. The output of this will be used to replace the entire file. 
 
 Please ensure that all relevant information is included to facilitate understanding and usage of the API provided by WeatherService.
+
+# Project README Update
+
+## Changes Made
+
+This update includes the following enhancements to the `CHANGELOG.md` and `README.md` files:
+
+### CHANGELOG.md
+
+- **Changelog Update**
+    - **Title:** Improve Prompt
+    - **Summary of Changes:**
+        - Enhanced the prompt in the README generation process to clarify that the output will replace the entire file content. This change aims to provide clearer instructions regarding the purpose and format of the README for the WeatherService project, ensuring that it comprehensively covers all HTTP endpoints and their respective request/response objects.
+  
+- **Other Updates:**
+    - Changed the HTTP GET method name in `WeatherForecastController` from `GetWeatherForecast` to `GetWeatherForecastByCity` for clearer functionality indication.
+    - Updated `.gitignore` to exclude the `bin` directory in addition to the `obj` directory for better build hygiene.
+
+### README.md
+
+- **README Update**
+    - ## WeatherService Documentation
+    - This is a readme for WeatherService. It should be in markdown format and should cover all the HTTP endpoints and their request/response objects. The output of this will be used to replace the entire file. 
+    - Please ensure that all relevant information is included to facilitate understanding and usage of the API provided by WeatherService.
+
+These updates serve to improve clarity and usability of both the changelog and the README for current and future users.
