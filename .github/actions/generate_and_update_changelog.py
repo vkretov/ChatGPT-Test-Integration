@@ -1,7 +1,7 @@
 import os
 import datetime
 from github import Github
-import h
+import openai
 
 # Configuration
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
