@@ -56,3 +56,11 @@ GET /weatherforecast?city=Seattle
 **Example Response:**
 
 Status Code: 200 OK
+
+# README Update
+
+## WeatherService Documentation
+
+This is a readme for WeatherService. It should be in markdown format and should cover all the HTTP endpoints and their request/response objects. The output of this will be used to replace the entire file. 
+
+Please ensure that all relevant information is included to facilitate understanding and usage of the API provided by WeatherService.

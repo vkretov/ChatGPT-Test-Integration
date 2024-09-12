@@ -60,3 +60,10 @@ This update enhances the workflow by automating the documentation process relate
 
 ### Configuration
 - Updated `.gitignore` to exclude the `bin` directory in addition to the `obj` directory for better build hygiene.
+
+### Changelog Update
+
+**Title:** Improve Prompt
+
+**Summary of Changes:**
+- Enhanced the prompt in the README generation process to clarify that the output will replace the entire file content. This change aims to provide clearer instructions regarding the purpose and format of the README for the WeatherService project, ensuring that it comprehensively covers all HTTP endpoints and their respective request/response objects.
