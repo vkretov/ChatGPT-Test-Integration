@@ -60,3 +60,28 @@ This update enhances the workflow by automating the documentation process relate
 
 ### Configuration
 - Updated `.gitignore` to exclude the `bin` directory in addition to the `obj` directory for better build hygiene.
+
+## Changelog Update
+
+### [Unreleased] - YYYY-MM-DD
+
+#### Added
+- Introduced a README.md file detailing the `TestWeatherService2`, a .NET Core web API for weather forecast data.
+  - Added documentation for the API endpoints including:
+    - **Get Weather Forecast**: Endpoint to retrieve current weather for a specific city.
+    - **Add Weather Forecast**: Endpoint to add new weather data.
+  
+#### Changed
+- Updated project name in the namespace from `TestPhotoService2` to `TestWeatherService2`.
+- Modified the project's solution file (`.sln`) to reflect the new project name.
+- Adjusted the ROOT namespace in the project file (`.csproj`) to match the updated project name. 
+
+#### File Changes
+- `.github/actions/generate_and_update_changelog.py`: Updated README generation to reflect the specific purpose of the API.
+- `.gitignore`: Added entries for the new project structure and IDE files.
+- `README.md`: Extensive update to include API documentation and usage examples for endpoints.
+- Other project files and configurations reflect the namespace change to `TestWeatherService2`. 
+
+---
+
+*This capture of changes indicates a significant rebranding of the project alongside a clarifying documentation effort to enhance usability.*
