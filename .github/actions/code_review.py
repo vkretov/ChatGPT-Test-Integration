@@ -21,6 +21,26 @@ def get_file_diffs(pr):
             })
     return diffs
 
+def generate_valid_comment_for_file(filename, patch):
+    # Updated prompt to instruct GPT to give a single comment
+    prompt = f"Review the changes in the file {filename} and suggest one important comment " \
+             f"about the code. If there is nothing to improve, simply say 'This file looks good.'\n\n" \
+             f"```diff\n{patch}\n```"
+
+    response = openai.chat.completions.create(
+        model="gpt-4o-mini",  # Use GPT-4 model
+        messages=[
+            {"role": "system", "content": "You are an expert code reviewer."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=500,
+        temperature=0.2
+    )
+    
+    print(response.choices[0].message)
+    comment = response.choices[0].message.content
+    return comment if comment else "This file looks good."    
+
 def generate_combined_review(diffs):
     # Combine all diffs into a single prompt for the entire PR
     combined_diff = "\n".join([f"### {diff['filename']}\n```diff\n{diff['patch']}\n```" for diff in diffs])
@@ -39,9 +59,10 @@ def generate_combined_review(diffs):
         temperature=0.2
     )
     
+    print(response.choices[0].message)
     comments = response.choices[0].message.content
     return comments
-    
+
 def post_inline_comment(pr, filename, comment_body):
     try:
         pr.create_review_comment(
@@ -68,9 +89,20 @@ def main():
         print("No file changes found in the pull request.")
         return
 
+    
+    for diff in diffs:
+        filename = diff['filename']
+        patch = diff['patch']
+
+        comment = generate_valid_comment_for_file(filename, patch)
+        print("possting file comment")
+        # Post the single comment for this file
+        post_inline_comment(pr, filename, comment)
+
     # Generate a combined review based on all file diffs
     review_comments = generate_combined_review(diffs)
     
+    print("posting whole comment")
     # Post the review comments as a general comment on the PR
     post_general_comment(pr, review_comments)
 
