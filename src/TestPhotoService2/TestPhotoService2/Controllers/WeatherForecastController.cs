@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TestPhotoService2.Controllers;
 
+using DataAccess;
+
 [ApiController]
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
@@ -11,29 +13,41 @@ public class WeatherForecastController : ControllerBase
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
     
-    private static readonly string[] Cities = new[]
-    {
-        "New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"
-    };
 
     private readonly ILogger<WeatherForecastController> _logger;
+    private readonly WeatherRepository _weatherRepository;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, WeatherRepository weatherRepository)
     {
         _logger = logger;
+        _weatherRepository = weatherRepository;
     }
 
-    
-    [HttpGet(Name = "GetWeatherForecastByCity")]
-    public IEnumerable<WeatherForecast> Get()
+    [HttpGet]
+    public WeatherForecast GetByCity(string city)
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        var weatherDto = _weatherRepository.GetWeatherForecastByCity(city);
+        if (weatherDto == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new WeatherForecast
             {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)],
-                City = Cities[Random.Shared.Next(Cities.Length)]
-            })
-            .ToArray();
+                City = weatherDto.City,
+                Date = DateOnly.FromDateTime(DateTime.Now),
+                TemperatureC = weatherDto.TemperatureC,
+                Summary = Summaries[0]
+            };
+        }
     }
+    
+    [HttpPost]
+    public void AddWeatherForecast(WeatherDto weatherDto)
+    {
+        _weatherRepository.AddWeatherForecast(weatherDto);
+    }
+    
+    
 }
