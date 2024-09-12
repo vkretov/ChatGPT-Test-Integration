@@ -41,6 +41,17 @@ def generate_combined_review(diffs):
     
     comments = response.choices[0].message.content
     return comments
+    
+def post_inline_comment(pr, filename, comment_body):
+    try:
+        pr.create_review_comment(
+            body=comment_body,
+            commit=pr.get_commits()[pr.commits - 1],
+            path=filename,
+            line=1  # Posting a general comment at the start of the file
+        )
+    except GithubException as e:
+        print(f"Failed to post inline comment on {filename}: {e}")
 
 def post_general_comment(pr, comment_body):
     try:
