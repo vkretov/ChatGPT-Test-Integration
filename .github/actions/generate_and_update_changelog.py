@@ -68,7 +68,7 @@ if __name__ == '__main__':
         
         # Update README.md
         readme_entry = generate_update_content(pr_details, pr_diffs, "", "README", 
-        f"This is a readme for WeatherService. it shoube be in md format and should cover all the http endpoints and their request/response objects.")
+        f"This is a readme for WeatherService. it shoube be in md format and should cover all the http endpoints and their request/response objects. The output of this will be used to replace the entire file.")
         update_file('README.md', readme_entry)
         
     except Exception as e:
