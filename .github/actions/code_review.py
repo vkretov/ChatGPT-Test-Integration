@@ -21,11 +21,13 @@ def get_file_diffs(pr):
             })
     return diffs
 
-def generate_valid_comment_for_file(filename, patch):
-    # Updated prompt to instruct GPT to give a single comment
-    prompt = f"Review the changes in the file {filename} and suggest one important comment " \
-             f"about the code. If there is nothing to improve, simply say 'This file looks good.'\n\n" \
-             f"```diff\n{patch}\n```"
+def generate_combined_review(diffs):
+    # Combine all diffs into a single prompt for the entire PR
+    combined_diff = "\n".join([f"### {diff['filename']}\n```diff\n{diff['patch']}\n```" for diff in diffs])
+    
+    prompt = f"Review the following changes in the pull request and provide comments or suggestions for improvement. " \
+             f"Please give important feedback and identify any potential issues in the entire set of changes. " \
+             f"**If everything looks good, mention that there are no improvements needed.**\n\n{combined_diff}"
 
     response = openai.chat.completions.create(
         model="gpt-4o-mini",  # Use GPT-4 model
@@ -33,49 +35,16 @@ def generate_valid_comment_for_file(filename, patch):
             {"role": "system", "content": "You are an expert code reviewer."},
             {"role": "user", "content": prompt}
         ],
-        max_tokens=500,
+        max_tokens=3000,  # Adjust based on your needs
         temperature=0.2
     )
     
-    print(response.choices[0].message)
-    comment = response.choices[0].message.content
-    return comment if comment else "This file looks good."
-
-def generate_valid_inline_comments_for_file(filename, patch):
-    # Updated to match new API format
-    prompt = f"Review the changes in the file {filename} and suggest any **important inline comments** " \
-             f"where the code could be improved or there is a notable issue. **Avoid commenting on every line** and only give feedback when necessary:\n\n" \
-             f"```diff\n{patch}\n```"
-
-    response = openai.chat.completions.create(
-        messages=[
-            {"role": "system", "content": "You are an expert code reviewer."},
-            {"role": "user", "content": prompt}
-        ],
-        model="gpt-4o-mini",  # Specify model
-        max_tokens=2000,
-        temperature=0.2
-    )
-    
-    print(response.choices[0].message)
     comments = response.choices[0].message.content
     return comments
 
-def post_inline_comment(pr, filename, comment_body):
+def post_general_comment(pr, comment_body):
     try:
-        pr.create_review_comment(
-            body=comment_body,
-            commit=pr.get_commits()[pr.commits - 1],
-            path=filename,
-            line=1  # Posting a general comment at the start of the file
-        )
-    except GithubException as e:
-        print(f"Failed to post inline comment on {filename}: {e}")
-
-def post_general_comment(pr, model_name):
-    general_comment = f"This pull request was reviewed by {model_name}."
-    try:
-        pr.create_issue_comment(body=general_comment)
+        pr.create_issue_comment(body=comment_body)
     except GithubException as e:
         print(f"Failed to post general comment: {e}")
 
@@ -88,17 +57,11 @@ def main():
         print("No file changes found in the pull request.")
         return
 
-    for diff in diffs:
-        filename = diff['filename']
-        patch = diff['patch']
-
-        comment = generate_valid_comment_for_file(filename, patch)
-
-        # Post the single comment for this file
-        post_inline_comment(pr, filename, comment)
-
-    model_name = "gpt-4o-mini"
-    post_general_comment(pr, model_name)
+    # Generate a combined review based on all file diffs
+    review_comments = generate_combined_review(diffs)
+    
+    # Post the review comments as a general comment on the PR
+    post_general_comment(pr, review_comments)
 
 if __name__ == "__main__":
     main()
