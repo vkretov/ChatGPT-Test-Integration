@@ -67,7 +67,8 @@ if __name__ == '__main__':
         update_file('CHANGELOG.md', changelog_entry)
         
         # Update README.md
-        readme_entry = generate_update_content(pr_details, pr_diffs, "", "README", "This should be in md format. The output is a replacement of this file and should not have any place holders. this should only include changes to the api project. It needs to update the api docs when changed.")
+        readme_entry = generate_update_content(pr_details, pr_diffs, "", "README", 
+        f"This is a readme for WeatherService. it shoube be in md format and should cover all the http endpoints and their request/response objects.")
         update_file('README.md', readme_entry)
         
     except Exception as e:
