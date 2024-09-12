@@ -60,3 +60,20 @@ This update enhances the workflow by automating the documentation process relate
 
 ### Configuration
 - Updated `.gitignore` to exclude the `bin` directory in addition to the `obj` directory for better build hygiene.
+
+### Changelog Update
+
+**Title**: More Specific Prompts
+
+**Changes**:
+- Updated the prompt for generating changelog entries to include a brief summary of the changes.
+- Enhanced the README generation prompt to specify that it should only include changes pertinent to the API project and that it needs to update the API documentation when changes occur.
+
+**Affected Files**:
+- `.github/actions/generate_and_update_changelog.py`
+
+**Details**:
+- The `generate_update_content` function for `CHANGELOG.md` now includes the prompt: "This should be a brief summary of the changes."
+- The `generate_update_content` function for `README.md` has been updated to: "This should be in md format. The output is a replacement of this file and should not have any place holders. This should only include changes to the API project. It needs to update the API docs when changed."
+
+This update ensures that both the changelog and README generation processes provide clearer and more specific guidance for contributors.
