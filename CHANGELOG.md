@@ -85,3 +85,32 @@ This update enhances the workflow by automating the documentation process relate
 - Ensured informative print statements were added for clarity during the review posting process.
 
 These changes collectively enhance the functionality of the code review system, making it more efficient and effective in providing feedback on pull requests as a whole.
+
+# Changelog Update
+
+## Summary of Changes
+This update includes enhancements to the code review process and improvements to the documentation files (CHANGELOG.md and README.md).
+
+### CHANGELOG.md
+- Improvements to the code review process:
+  - Implemented a function to generate a combined review for the entire pull request, enabling a holistic assessment of changes.
+  - Updated `generate_valid_comment_for_file` function to maintain existing functionality, with added capability to handle multiple file diffs.
+  - Increased the maximum tokens for OpenAI API calls for accommodating larger pull requests.
+  - Modified posting of general comments to include review comments for the entire pull request instead of per file.
+
+- New functionalities:
+  - Added `generate_combined_review(diffs)` function for consolidating all diffs into a single prompt.
+  - Updated `post_general_comment(pr, comment_body)` to take the combined review as input.
+  - Improved formatting and readability in the `generate_combined_review` function.
+  - Included informative print statements for clarity during the review posting process.
+
+These changes enhance the functionality of the code review system, making it more efficient and effective.
+
+### README.md
+- Updated the README.md with comprehensive information about the WeatherService API, including:
+  - Detailed descriptions of available HTTP endpoints along with request parameters and response formats.
+  - Additional features such as caching support and options for response formats.
+  - Contributing guidelines and licensing information.
+  - Noteworthy updates regarding the code review action, highlighting its capability to review pull requests holistically and provide combined comments.
+
+This update improves user understanding and engagement with the documentation while enhancing the workflow of the code review process.
