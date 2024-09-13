@@ -85,3 +85,19 @@ This update enhances the workflow by automating the documentation process relate
 - Ensured informative print statements were added for clarity during the review posting process.
 
 These changes collectively enhance the functionality of the code review system, making it more efficient and effective in providing feedback on pull requests as a whole.
+
+### Changelog Update
+
+**Title:** Add generating new forecasts
+
+**Summary:**
+- Introduced a new `WeatherForecastGenerator` service to allow the generation of new weather forecasts.
+- Updated the `WeatherForecastController` to utilize the `WeatherForecastGenerator`. If no forecast exists for a requested city, a new forecast will be created and stored in the repository.
+
+**Changes:**
+- **WeatherForecastController.cs**
+  - Added a dependency on `WeatherForecastGenerator`.
+  - Implemented logic to generate and add a new weather forecast when one is not found for the requested city.
+
+- **WeatherForecastGenerator.cs**
+  - Created a new service that generates weather data with random temperatures for a specified city.

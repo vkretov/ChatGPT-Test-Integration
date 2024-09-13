@@ -160,3 +160,100 @@ The code review action now includes functionality to:
 
 These enhancements improve the overall efficiency and effectiveness of code reviews within the repository.
 ```
+
+```markdown
+# WeatherService README
+
+Welcome to the WeatherService! This service provides weather forecast data for cities. Below is the detailed documentation of the HTTP endpoints available in the service.
+
+## API Endpoints
+
+### 1. Get Weather Forecast by City
+
+- **Endpoint**: `GET /weatherforecast?city={city}`
+- **Description**: Retrieves the weather forecast for a specified city. If no forecast is found, a new forecast will be generated and saved.
+  
+#### Request Parameters
+
+| Parameter | Type   | Description                 |
+|-----------|--------|-----------------------------|
+| city      | string | The name of the city to fetch the weather for. |
+
+#### Response
+
+- **Status Code**: `200 OK`
+- **Content**: Returns a WeatherForecast object.
+
+##### WeatherForecast Object
+```json
+{
+  "city": "string",
+  "date": "DateOnly",
+  "temperatureC": "integer",
+  "summary": "string"
+}
+```
+
+#### Example Request
+```
+GET /weatherforecast?city=NewYork
+```
+
+#### Example Response
+```json
+{
+  "city": "NewYork",
+  "date": "2023-10-05",
+  "temperatureC": 21,
+  "summary": "Sunny"
+}
+```
+
+### Behavior
+
+1. When a request is made to retrieve a weather forecast for a specific city:
+   - The service will first check if a forecast exists in the repository.
+   - If found, it returns the existing forecast.
+   - If no forecast is found, the service will:
+     - Generate a new weather forecast using a randomized temperature generator.
+     - Save the new forecast in the repository.
+     - Return the generated forecast to the requester.
+
+---
+
+## New Feature: Generating New Forecasts
+
+This service now includes the capability to generate new weather forecasts. The functionality is integrated within the endpoint for fetching a forecast. The random temperature generation ensures unique and non-repeated data for each request where no prior forecast exists.
+
+---
+
+## Code Structure
+
+### Controllers
+
+- **WeatherForecastController**: Handles HTTP requests related to weather forecasts.
+
+### Services
+
+- **WeatherForecastGenerator**: Contains logic to generate random weather forecasts based on city input.
+
+### Data Access
+
+- **WeatherRepository**: Responsible for data operations related to weather forecasts.
+
+---
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request with your proposed changes.
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+Thank you for using WeatherService! We hope it brings you accurate and delightful weather data.
+```
