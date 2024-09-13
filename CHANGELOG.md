@@ -67,3 +67,21 @@ This update enhances the workflow by automating the documentation process relate
 
 **Summary of Changes:**
 - Enhanced the prompt in the README generation process to clarify that the output will replace the entire file content. This change aims to provide clearer instructions regarding the purpose and format of the README for the WeatherService project, ensuring that it comprehensively covers all HTTP endpoints and their respective request/response objects.
+
+## Changelog Update
+
+### Improvements
+- Enhanced the code review process by implementing a function to generate a combined review for the entire pull request (PR), allowing for a more holistic assessment of changes.
+- Updated the `generate_valid_comment_for_file` function to maintain existing functionality, while adding the capability to handle multiple file diffs.
+- Increased the maximum tokens for the OpenAI API call to accommodate larger PRs.
+- Modified the posting of general comments to include the review comments generated for the entire PR instead of individual model names.
+
+### Code Changes:
+- Added `generate_combined_review(diffs)` function to compile all diffs into a single prompt.
+- Updated `post_general_comment(pr, comment_body)` to take the combined review comment as input.
+- Improved formatting and readability in the `generate_combined_review` function.
+
+### Other Fixes:
+- Ensured informative print statements were added for clarity during the review posting process.
+
+These changes collectively enhance the functionality of the code review system, making it more efficient and effective in providing feedback on pull requests as a whole.
